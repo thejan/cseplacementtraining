@@ -28,19 +28,24 @@
 
     <style>
 
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
         body{
             background:linear-gradient(to right,#e3f2fd,#f1f8ff);
             font-family:'Poppins',sans-serif;
-            padding-bottom:50px;
+            padding:15px;
         }
 
         .main-box{
-            width:96%;
-            margin:20px auto;
+            width:100%;
             background:white;
             padding:25px;
             border-radius:20px;
-            box-shadow:0px 0px 20px rgba(0,0,0,0.1);
+            box-shadow:0px 0px 20px rgba(0,0,0,0.08);
         }
 
         .portal-title{
@@ -48,12 +53,11 @@
             font-size:42px;
             font-weight:700;
             color:#0d47a1;
-            margin-top:25px;
             margin-bottom:30px;
         }
 
         .search-section{
-            margin-top:20px;
+            margin-bottom:25px;
         }
 
         .form-control{
@@ -77,7 +81,7 @@
         }
 
         .section-title{
-            margin-top:40px;
+            margin-top:35px;
             margin-bottom:15px;
             font-weight:700;
             color:#5d4037;
@@ -86,29 +90,34 @@
 
         .table-responsive{
             overflow-x:auto;
+            -webkit-overflow-scrolling:touch;
+            border-radius:10px;
         }
 
         table{
-            font-size:14px;
+            width:100%;
+            border-collapse:collapse;
             white-space:nowrap;
+            min-width:max-content;
         }
 
         table td,
         table th{
             border:1px solid #333 !important;
+            padding:8px;
+            text-align:center;
+            vertical-align:middle;
         }
 
         th{
             background:#1976d2 !important;
             color:white !important;
-            text-align:center;
-            vertical-align:middle;
+            font-weight:600;
         }
 
         td{
-            text-align:center;
-            vertical-align:middle;
             background:white;
+            color:#212121;
         }
 
         .student-table th{
@@ -122,7 +131,13 @@
         .student-table td{
             font-size:24px;
             font-weight:600;
-            color:#212121;
+        }
+
+        .legend{
+            margin-top:8px;
+            font-size:15px;
+            font-weight:600;
+            color:#555;
         }
 
         .not-found{
@@ -140,19 +155,130 @@
             text-align:center;
             margin-top:40px;
             color:#555;
+            font-size:18px;
             font-weight:500;
-            font-size:20px;
-        }
-
-        .legend{
-            margin-top:8px;
-            font-weight:600;
-            color:#444;
-            font-size:16px;
         }
 
         table tr:hover td{
             background:#f5faff;
+        }
+
+
+
+        /* MOBILE RESPONSIVE */
+
+        @media(max-width:992px){
+
+            .portal-title{
+                font-size:34px;
+            }
+
+            .section-title{
+                font-size:28px;
+            }
+
+            .student-table th{
+                font-size:18px;
+            }
+
+            .student-table td{
+                font-size:20px;
+            }
+
+            table{
+                font-size:13px;
+            }
+
+        }
+
+
+
+        @media(max-width:768px){
+
+            body{
+                padding:8px;
+            }
+
+            .main-box{
+                padding:15px;
+                border-radius:15px;
+            }
+
+            .portal-title{
+                font-size:26px;
+                line-height:1.4;
+            }
+
+            .section-title{
+                font-size:22px;
+            }
+
+            .form-control{
+                height:50px;
+                font-size:18px;
+                margin-bottom:10px;
+            }
+
+            .btn-search{
+                height:50px;
+                font-size:18px;
+            }
+
+            .student-table th{
+                font-size:15px;
+            }
+
+            .student-table td{
+                font-size:17px;
+            }
+
+            table{
+                font-size:11px;
+            }
+
+            table td,
+            table th{
+                padding:5px;
+            }
+
+            .footer{
+                font-size:13px;
+            }
+
+            .legend{
+                font-size:12px;
+            }
+
+        }
+
+
+
+        @media(max-width:480px){
+
+            .portal-title{
+                font-size:22px;
+            }
+
+            .section-title{
+                font-size:20px;
+            }
+
+            .form-control{
+                font-size:16px;
+            }
+
+            .btn-search{
+                font-size:16px;
+            }
+
+            .student-table td{
+                font-size:15px;
+            }
+
+            table{
+                font-size:10px;
+            }
+
         }
 
     </style>
@@ -174,9 +300,9 @@
 
     <!-- SEARCH -->
 
-    <div class="row search-section">
+    <div class="row search-section g-2">
 
-        <div class="col-md-9">
+        <div class="col-lg-9 col-md-8 col-12">
 
             <input type="text"
                    id="usn"
@@ -185,7 +311,7 @@
 
         </div>
 
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-4 col-12">
 
             <button class="btn btn-primary btn-search w-100"
                     onclick="searchStudent()">
@@ -224,23 +350,27 @@
             Student Details
         </h2>
 
-        <table class="table table-bordered student-table">
+        <div class="table-responsive">
 
-            <tbody>
+            <table class="table student-table">
 
-                <tr>
-                    <th>USN</th>
-                    <td id="r_usn"></td>
-                </tr>
+                <tbody>
 
-                <tr>
-                    <th>Name</th>
-                    <td id="r_name"></td>
-                </tr>
+                    <tr>
+                        <th>USN</th>
+                        <td id="r_usn"></td>
+                    </tr>
 
-            </tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td id="r_name"></td>
+                    </tr>
 
-        </table>
+                </tbody>
+
+            </table>
+
+        </div>
 
 
 
@@ -254,7 +384,7 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered"
+            <table class="table"
                    id="attendanceTable">
             </table>
 
@@ -277,7 +407,7 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered"
+            <table class="table"
                    id="scoreTable">
             </table>
 
@@ -330,7 +460,7 @@ async function loadAttendance() {
 
     attendanceData =
         XLSX.utils.sheet_to_json(sheet, {
-            header: 1
+            header:1
         });
 
 }
@@ -355,7 +485,7 @@ async function loadScores() {
 
     scoreData =
         XLSX.utils.sheet_to_json(sheet, {
-            header: 1
+            header:1
         });
 
 }
@@ -379,7 +509,7 @@ initialize();
 
 
 
-// SEARCH ON ENTER KEY
+// SEARCH ON ENTER
 $("#usn").keypress(function(event){
 
     if(event.which == 13){
@@ -393,7 +523,7 @@ $("#usn").keypress(function(event){
 
 
 // SEARCH FUNCTION
-function searchStudent() {
+function searchStudent(){
 
     let usn =
         $("#usn").val().trim().toUpperCase();
@@ -410,9 +540,7 @@ function searchStudent() {
         attendanceData.find(
             row =>
                 row[1] &&
-                String(row[1])
-                .trim()
-                .toUpperCase() === usn
+                String(row[1]).trim().toUpperCase() === usn
         );
 
 
@@ -423,15 +551,13 @@ function searchStudent() {
         scoreData.find(
             row =>
                 row[1] &&
-                String(row[1])
-                .trim()
-                .toUpperCase() === usn
+                String(row[1]).trim().toUpperCase() === usn
         );
 
 
 
 
-    // STUDENT NOT FOUND
+    // NOT FOUND
     if(!attendanceStudent && !scoreStudent){
 
         $("#error").html("Student Not Found");
@@ -475,25 +601,15 @@ function searchStudent() {
         <tr>
 
             <td>${attendanceStudent?.[3] ?? "-"}</td>
-
             <td>${attendanceStudent?.[4] ?? "-"}</td>
-
             <td>${attendanceStudent?.[5] ?? "-"}</td>
-
             <td>${attendanceStudent?.[6] ?? "-"}</td>
-
             <td>${attendanceStudent?.[7] ?? "-"}</td>
-
             <td>${attendanceStudent?.[8] ?? "-"}</td>
-
             <td>${attendanceStudent?.[9] ?? "-"}</td>
-
             <td>${attendanceStudent?.[10] ?? "-"}</td>
-
             <td>${attendanceStudent?.[11] ?? "-"}</td>
-
             <td>${attendanceStudent?.[12] ?? "-"}</td>
-
             <td>${attendanceStudent?.[13] ?? "-"}</td>
 
         </tr>
