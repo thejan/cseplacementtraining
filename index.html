@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Placement Training Student Portal
+    </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- SheetJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        body{
+            background:linear-gradient(to right,#e3f2fd,#f1f8ff);
+            font-family:'Poppins',sans-serif;
+            padding-bottom:50px;
+        }
+
+        .main-box{
+            width:96%;
+            margin:20px auto;
+            background:white;
+            padding:25px;
+            border-radius:20px;
+            box-shadow:0px 0px 20px rgba(0,0,0,0.1);
+        }
+
+        .portal-title{
+            text-align:center;
+            font-size:42px;
+            font-weight:700;
+            color:#0d47a1;
+            margin-top:25px;
+            margin-bottom:30px;
+        }
+
+        .search-section{
+            margin-top:20px;
+        }
+
+        .form-control{
+            height:60px;
+            font-size:22px;
+            border-radius:12px;
+            border:2px solid #90caf9;
+        }
+
+        .btn-search{
+            height:60px;
+            font-size:22px;
+            font-weight:600;
+            border-radius:12px;
+            border:none;
+            background:linear-gradient(to right,#1565c0,#42a5f5);
+        }
+
+        .btn-search:hover{
+            background:linear-gradient(to right,#0d47a1,#1e88e5);
+        }
+
+        .section-title{
+            margin-top:40px;
+            margin-bottom:15px;
+            font-weight:700;
+            color:#5d4037;
+            font-size:34px;
+        }
+
+        .table-responsive{
+            overflow-x:auto;
+        }
+
+        table{
+            font-size:14px;
+            white-space:nowrap;
+        }
+
+        table td,
+        table th{
+            border:1px solid #333 !important;
+        }
+
+        th{
+            background:#1976d2 !important;
+            color:white !important;
+            text-align:center;
+            vertical-align:middle;
+        }
+
+        td{
+            text-align:center;
+            vertical-align:middle;
+            background:white;
+        }
+
+        .student-table th{
+            background:#f5f5dc !important;
+            color:#5d4037 !important;
+            width:25%;
+            font-size:22px;
+            font-weight:700;
+        }
+
+        .student-table td{
+            font-size:24px;
+            font-weight:600;
+            color:#212121;
+        }
+
+        .not-found{
+            color:red;
+            font-size:20px;
+            font-weight:600;
+            margin-top:20px;
+        }
+
+        .result-box{
+            display:none;
+        }
+
+        .footer{
+            text-align:center;
+            margin-top:40px;
+            color:#555;
+            font-weight:500;
+            font-size:20px;
+        }
+
+        .legend{
+            margin-top:8px;
+            font-weight:600;
+            color:#444;
+            font-size:16px;
+        }
+
+        table tr:hover td{
+            background:#f5faff;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="main-box">
+
+    <!-- TITLE -->
+
+    <div class="portal-title">
+        Placement Training Student Portal
+    </div>
+
+
+
+
+    <!-- SEARCH -->
+
+    <div class="row search-section">
+
+        <div class="col-md-9">
+
+            <input type="text"
+                   id="usn"
+                   class="form-control"
+                   placeholder="Enter USN">
+
+        </div>
+
+        <div class="col-md-3">
+
+            <button class="btn btn-primary btn-search w-100"
+                    onclick="searchStudent()">
+
+                🔍 Search
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+
+    <!-- ERROR -->
+
+    <div id="error"
+         class="not-found">
+    </div>
+
+
+
+
+    <!-- RESULT -->
+
+    <div id="result"
+         class="result-box">
+
+
+
+
+        <!-- STUDENT DETAILS -->
+
+        <h2 class="section-title">
+            Student Details
+        </h2>
+
+        <table class="table table-bordered student-table">
+
+            <tbody>
+
+                <tr>
+                    <th>USN</th>
+                    <td id="r_usn"></td>
+                </tr>
+
+                <tr>
+                    <th>Name</th>
+                    <td id="r_name"></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+
+
+
+        <!-- ATTENDANCE DETAILS -->
+
+        <h2 class="section-title">
+            Attendance Details
+        </h2>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered"
+                   id="attendanceTable">
+            </table>
+
+        </div>
+
+        <div class="legend">
+            0 : Absent &nbsp;&nbsp;&nbsp;
+            1 : Present
+        </div>
+
+
+
+
+
+        <!-- ASSESSMENT DETAILS -->
+
+        <h2 class="section-title">
+            Assessment Scores
+        </h2>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered"
+                   id="scoreTable">
+            </table>
+
+        </div>
+
+        <div class="legend">
+            0 : Not Submitted &nbsp;&nbsp;&nbsp;
+            1 : Submitted
+        </div>
+
+    </div>
+
+
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+        © 2026 ATME College of Engineering | Department of CSE
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+let attendanceData = [];
+let scoreData = [];
+
+
+
+
+// LOAD ATTENDANCE EXCEL
+async function loadAttendance() {
+
+    const response =
+        await fetch("Attendance_Placement_Training_2025-26.xlsx");
+
+    const data =
+        await response.arrayBuffer();
+
+    const workbook =
+        XLSX.read(data);
+
+    const sheet =
+        workbook.Sheets[workbook.SheetNames[0]];
+
+    attendanceData =
+        XLSX.utils.sheet_to_json(sheet, {
+            header: 1
+        });
+
+}
+
+
+
+
+// LOAD ASSESSMENT EXCEL
+async function loadScores() {
+
+    const response =
+        await fetch("Assessment_Scores.xlsx");
+
+    const data =
+        await response.arrayBuffer();
+
+    const workbook =
+        XLSX.read(data);
+
+    const sheet =
+        workbook.Sheets[workbook.SheetNames[0]];
+
+    scoreData =
+        XLSX.utils.sheet_to_json(sheet, {
+            header: 1
+        });
+
+}
+
+
+
+
+// INITIALIZE
+async function initialize() {
+
+    await loadAttendance();
+
+    await loadScores();
+
+    console.log("Excel Files Loaded");
+
+}
+
+initialize();
+
+
+
+
+// SEARCH ON ENTER KEY
+$("#usn").keypress(function(event){
+
+    if(event.which == 13){
+
+        searchStudent();
+    }
+
+});
+
+
+
+
+// SEARCH FUNCTION
+function searchStudent() {
+
+    let usn =
+        $("#usn").val().trim().toUpperCase();
+
+    $("#error").html("");
+
+    $("#result").hide();
+
+
+
+
+    // SEARCH ATTENDANCE
+    let attendanceStudent =
+        attendanceData.find(
+            row =>
+                row[1] &&
+                String(row[1])
+                .trim()
+                .toUpperCase() === usn
+        );
+
+
+
+
+    // SEARCH ASSESSMENT
+    let scoreStudent =
+        scoreData.find(
+            row =>
+                row[1] &&
+                String(row[1])
+                .trim()
+                .toUpperCase() === usn
+        );
+
+
+
+
+    // STUDENT NOT FOUND
+    if(!attendanceStudent && !scoreStudent){
+
+        $("#error").html("Student Not Found");
+
+        return;
+    }
+
+
+
+
+    // STUDENT DETAILS
+    $("#r_usn").html(usn);
+
+    $("#r_name").html(
+        attendanceStudent?.[2] ||
+        scoreStudent?.[2] ||
+        "-"
+    );
+
+
+
+
+
+    // ATTENDANCE TABLE
+    let attendanceHTML = `
+
+        <tr>
+            <th>PreTest</th>
+            <th>Arrays</th>
+            <th>Stack</th>
+            <th>Queues</th>
+            <th>Linked List</th>
+            <th>Searching</th>
+            <th>Sorting</th>
+            <th>Expert Session</th>
+            <th>CA</th>
+            <th>TAP</th>
+            <th>Participation</th>
+        </tr>
+
+        <tr>
+
+            <td>${attendanceStudent?.[3] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[4] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[5] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[6] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[7] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[8] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[9] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[10] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[11] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[12] ?? "-"}</td>
+
+            <td>${attendanceStudent?.[13] ?? "-"}</td>
+
+        </tr>
+
+    `;
+
+    $("#attendanceTable").html(attendanceHTML);
+
+
+
+
+
+
+    // ASSESSMENT TABLE
+    let scoreHTML = "";
+
+
+
+    // HEADER ROW 1
+    scoreHTML += `
+    <tr>
+
+        <th rowspan="2">
+            Pre-placement Test
+        </th>
+
+        <th colspan="7">Arrays</th>
+
+        <th colspan="7">Stack</th>
+
+        <th colspan="7">Queues</th>
+
+        <th colspan="7">Linked List</th>
+
+        <th colspan="9">Searching & Sorting</th>
+
+        <th colspan="3">Final</th>
+
+        <th rowspan="2">Score</th>
+
+        <th rowspan="2">Percentage</th>
+
+        <th rowspan="2">Status</th>
+
+    </tr>
+    `;
+
+
+
+
+    // HEADER ROW 2
+    scoreHTML += `
+    <tr>
+
+        <!-- Arrays -->
+        <th>Attendance</th>
+        <th>Quiz</th>
+        <th>A1</th>
+        <th>A2</th>
+        <th>A3</th>
+        <th>A4</th>
+        <th>A5</th>
+
+        <!-- Stack -->
+        <th>Attendance</th>
+        <th>Quiz</th>
+        <th>A1</th>
+        <th>A2</th>
+        <th>A3</th>
+        <th>A4</th>
+        <th>A5</th>
+
+        <!-- Queues -->
+        <th>Attendance</th>
+        <th>Quiz</th>
+        <th>A1</th>
+        <th>A2</th>
+        <th>A3</th>
+        <th>A4</th>
+        <th>A5</th>
+
+        <!-- Linked List -->
+        <th>Attendance</th>
+        <th>Quiz</th>
+        <th>A1</th>
+        <th>A2</th>
+        <th>A3</th>
+        <th>A4</th>
+        <th>A5</th>
+
+        <!-- Searching & Sorting -->
+        <th>Searching Attendance</th>
+        <th>Sorting Attendance</th>
+        <th>Quiz Searching</th>
+        <th>Quiz Sorting</th>
+        <th>A1</th>
+        <th>A2</th>
+        <th>A3</th>
+        <th>A4</th>
+        <th>A5</th>
+
+        <!-- Final -->
+        <th>Expert Session</th>
+        <th>Quiz</th>
+        <th>Assignment</th>
+
+    </tr>
+    `;
+
+
+
+
+
+    // DATA ROW
+    scoreHTML += "<tr>";
+
+
+
+    for(let i = 3; i < scoreStudent.length; i++){
+
+        let value =
+            scoreStudent[i];
+
+
+
+        // FORMAT PERCENTAGE
+        if(i === scoreStudent.length - 2){
+
+            value =
+                Number(value).toFixed(2) + "%";
+        }
+
+
+
+        scoreHTML += `<td>${value ?? "-"}</td>`;
+    }
+
+    scoreHTML += "</tr>";
+
+
+
+    $("#scoreTable").html(scoreHTML);
+
+
+
+
+    // SHOW RESULT
+    $("#result").show();
+
+}
+
+</script>
+
+</body>
+
+</html>
